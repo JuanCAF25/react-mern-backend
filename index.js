@@ -1,8 +1,14 @@
+const path = require('path')
+
 const express = require('express')
-const { dbConnection } = require('./db/config')
-const cors = require('cors')
 require('dotenv').config()
-const port = process.env.PORT || 4000
+const cors = require('cors')
+const { dbConnection } = require('./db/config')
+
+const port = process.env.PORT
+
+
+
 
 //Crear el servido de express
 const app = express()
@@ -23,6 +29,10 @@ app.use(express.json())
 //Rutas
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/events', require('./routes/events'))
+
+app.use('/{*splat}', (req, res) => {
+    res.sendFile(path.join(__dirname,'public/index.html'))
+})
 
 //escuchar peticiones
 app.listen(port, () => {
